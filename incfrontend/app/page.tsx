@@ -45,19 +45,21 @@ export default function MainPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Upload CSV File</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="file">CSV File</Label>
-          <Input id="file" type="file" accept=".csv" onChange={handleFileChange} />
-        </div>
-        <button type="submit" className="btn btn-primary mt-2" disabled={loading}>
-          Upload
-        </button>
-      </form>
-      {loading && <p>Loading...</p>}
-      {message && <p>{message}</p>}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-4 text-center">Upload CSV File</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="file">CSV File</Label>
+            <Input id="file" type="file" accept=".csv" onChange={handleFileChange} />
+          </div>
+          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+            Upload
+          </button>
+        </form>
+        {loading && <p className="text-center mt-4">Loading...</p>}
+        {message && <p className="text-center mt-4">{message}</p>}
+      </div>
     </div>
   );
 }
