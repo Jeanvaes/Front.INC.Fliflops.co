@@ -33,6 +33,7 @@ import {
 import { StructuredData, columns } from "./columns";
 import data from "@/json/respuestav2.json";
 import { useRouter } from 'next/navigation';
+import * as XLSX from 'xlsx';
 
 const columnNames = {
   id_paciente: "ID Paciente",
@@ -104,6 +105,23 @@ export function DataTable() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const downloadXLSX = () => {
+    const visibleColumns = table
+      .getAllColumns()
+      .filter((column) => column.getIsVisible())
+      .map((column) => column.id);
+
+    const rows = table.getFilteredRowModel().rows.map((row) =>
+      visibleColumns.map((columnId) => row.getValue(columnId))
+    );
+
+    const worksheet = XLSX.utils.aoa_to_sheet([visibleColumns, ...rows]);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Filtered Data");
+
+    XLSX.writeFile(workbook, "filtered_data.xlsx");
   };
 
   const toggleAllColumns = (checked: boolean) => {
@@ -224,9 +242,12 @@ export function DataTable() {
             </Button>
           </div>
         </div>
-        <div className="flex justify-end py-4">
+        <div className="flex justify-end space-x-2 py-4">
           <Button onClick={downloadCSV} variant="outline" style={{ backgroundColor: '#e3353b', color: 'white' }}>
             Descargar CSV
+          </Button>
+          <Button onClick={downloadXLSX} variant="outline" style={{ backgroundColor: '#e3353b', color: 'white' }}>
+            Descargar XLSX
           </Button>
         </div>
       </div>
