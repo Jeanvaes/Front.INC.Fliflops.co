@@ -31,10 +31,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StructuredData, columns } from "./columns";
-import data from "@/json/respuesta.json";
+import data from "@/json/respuestav2.json";
 import { useRouter } from 'next/navigation';
 
 const columnNames = {
+  id_paciente: "ID Paciente",
+  prestacion: "Prestación",
   nodulos: "Nódulos",
   morfologia_nodulos: "Morfología Nódulos",
   margenes_nodulos: "Márgenes Nódulos",
@@ -49,6 +51,7 @@ const columnNames = {
   hallazgos_asociados: "Hallazgos Asociados",
   lateralidad_hallazgo: "Lateralidad Hallazgo",
   birads: "BIRADS",
+  edad: "Edad",
 };
 
 export function DataTable() {
@@ -115,7 +118,7 @@ export function DataTable() {
 
   return (
     <div className="flex">
-      <div className="w-3/4">
+      <div className="w-3/4 pr-4"> {/* Added padding-right here */}
         <div className="flex items-center py-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -208,7 +211,7 @@ export function DataTable() {
               disabled={!table.getCanPreviousPage()}
               style={{ backgroundColor: '#e3353b', color: 'white' }}
             >
-              Previous
+              Anterior
             </Button>
             <Button
               variant="outline"
@@ -217,7 +220,7 @@ export function DataTable() {
               disabled={!table.getCanNextPage()}
               style={{ backgroundColor: '#e3353b', color: 'white' }}
             >
-              Next
+              Siguiente
             </Button>
           </div>
         </div>
@@ -227,18 +230,17 @@ export function DataTable() {
           </Button>
         </div>
       </div>
-      <div className="w-1/4 p-4">
+      <div className="w-1/4 p-4 ml-8"> {/* Increased margin-left here */}
         <h2 className="text-lg font-bold mb-4">Filtrar Columnas</h2>
-        <div className="mb-4">
+        <div className="mb-4 flex items-center">
           <Checkbox
             checked={table.getIsAllColumnsVisible()}
             onCheckedChange={(value) => toggleAllColumns(!!value)}
             aria-label="Select all columns"
-          >
-            Seleccionar/Deseleccionar Todas
-          </Checkbox>
+          />
+          <span className="ml-2 text-sm">Seleccionar Todas</span> {/* Decreased font size */}
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-4"> {/* Increased gap to 4 */}
           {table.getAllColumns().map((column) => (
             <div key={column.id} className="flex items-center space-x-2">
               <Checkbox
@@ -246,7 +248,7 @@ export function DataTable() {
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 aria-label={`Toggle ${column.id}`}
               />
-              <span className="text-sm">
+              <span className="text-xs"> {/* Decreased font size */}
                 {columnNames[column.id as keyof typeof columnNames] || column.id}
               </span>
             </div>

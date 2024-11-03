@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDays, Download, TrendingUp } from "lucide-react";
 import { Bar, BarChart, XAxis, YAxis, Tooltip as ChartTooltip } from "recharts";
-import data from "@/json/respuesta.json";
+import data from "@/json/respuestav2.json";
 import Header from '@/components/ui/header';
 
 export const description = "A dashboard with dynamic cards";
