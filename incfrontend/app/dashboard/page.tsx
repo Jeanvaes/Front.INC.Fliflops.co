@@ -75,7 +75,7 @@ export default function DashboardPage() {
   };
 
   const getColumnSum = (column: string) => {
-    return data.structured_data.reduce((sum, item: Record<string, string>) => {
+    return data.structured_data.reduce((sum, item: { [key: string]: string }) => {
       const value = parseInt(item[column], 10);
       return sum + (isNaN(value) ? 0 : value);
     }, 0);
@@ -88,7 +88,7 @@ export default function DashboardPage() {
       return acc;
     }, {} as Record<string, number>);
 
-    data.structured_data.forEach((item) => {
+    data.structured_data.forEach((item: { [key: string]: string }) => {
       const value = item[column];
       if (counts[value] !== undefined) {
         counts[value]++;
@@ -132,10 +132,6 @@ export default function DashboardPage() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Dashboard</h1>
           <div className="flex items-center gap-4">
-            <Button variant="outline" className="gap-2">
-              <CalendarDays className="h-4 w-4" />
-              Jan 20, 2023 - Feb 09, 2023
-            </Button>
             <Button>
               <Download className="h-4 w-4 mr-2" />
               Download
@@ -143,34 +139,39 @@ export default function DashboardPage() {
           </div>
         </div>
 
-    
 
-        <div className="grid grid-cols-2 gap-2 mb-4">
-          {Object.keys(columnNames).map((column) => (
-            <div key={column} className="flex items-center space-x-2">
-              <Checkbox
-                checked={selectedColumns.includes(column)}
-                onCheckedChange={() => handleCheckboxChange(column)}
-                aria-label={`Toggle ${column}`}
-              />
-              <span className="text-sm">
-                {columnNames[column as keyof typeof columnNames]}
-              </span>
-            </div>
-          ))}
+        <div className="mb-4">
+          <h2 className="text-lg text-muted-foreground mb-2">Parámetros</h2>
+          <div className="grid grid-cols-2 gap-2">
+            {Object.keys(columnNames).map((column) => (
+              <div key={column} className="flex items-center space-x-2">
+                <Checkbox
+                  checked={selectedColumns.includes(column)}
+                  onCheckedChange={() => handleCheckboxChange(column)}
+                  aria-label={`Toggle ${column}`}
+                />
+                <span className="text-sm">
+                  {columnNames[column as keyof typeof columnNames]}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mb-4">
-          {biradsCategories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <Checkbox
-                checked={selectedBirads.includes(category)}
-                onCheckedChange={() => handleBiradsCheckboxChange(category)}
-                aria-label={`Toggle ${category}`}
-              />
-              <span className="text-sm">BIRADS {category}</span>
-            </div>
-          ))}
+        <div className="mb-4">
+          <h2 className="text-lg text-muted-foreground mb-2">Clasificación de BIRADS</h2>
+          <div className="grid grid-cols-2 gap-2">
+            {biradsCategories.map((category) => (
+              <div key={category} className="flex items-center space-x-2">
+                <Checkbox
+                  checked={selectedBirads.includes(category)}
+                  onCheckedChange={() => handleBiradsCheckboxChange(category)}
+                  aria-label={`Toggle ${category}`}
+                />
+                <span className="text-sm">BIRADS {category}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -232,7 +233,7 @@ export default function DashboardPage() {
 
         <div className="flex justify-end py-4">
           <Button onClick={() => router.push('/results')} variant="outline" style={{ backgroundColor: '#e3353b', color: 'white' }}>
-            Ir al Dashboard
+            Ir a Resultados
           </Button>
         </div>
       </div>
